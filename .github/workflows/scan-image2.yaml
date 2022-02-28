@@ -50,3 +50,17 @@ jobs:
       if: ${{ always() }}
       with:
         sarif_file: ${{ steps.scan-to-sarif.outputs.sarif-report-path }}
+
+    - name: Sync alerts to Jira issues
+      uses: github/ghas-jira-integration@v1
+      with:
+          jira_url: 'https://frik0.atlassian.net'
+          jira_user: '${{ secrets.JIRA_USER }}'
+          jira_token: '${{ secrets.JIRA_TOKEN }}'
+          jira_project: 'PRUEB'
+          jira_issue_type: 'bug'
+          sync_direction: 'gh2jira'
+          
+    #- name: Exit if vuln were found
+    #  run: cat trivy-results.sarif  | grep -q CVE && exit 1 || exit 0
+      
