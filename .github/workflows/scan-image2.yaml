@@ -31,11 +31,7 @@ jobs:
       with:
         image-name: frik0/test:1.0
         
-    - name: test
-      run: echo ${{ steps.scan.outputs.scan-report-path }}
-      
-    - name: test2
-      run: cat ${{ steps.scan.outputs.scan-report-path }}
+  
     
     - name: Convert Container Scan Report to SARIF
       id: scan-to-sarif
@@ -52,6 +48,7 @@ jobs:
         sarif_file: ${{ steps.scan-to-sarif.outputs.sarif-report-path }}
 
     - name: Sync alerts to Jira issues
+      if: ${{ always() }}
       uses: github/ghas-jira-integration@v1
       with:
           jira_url: 'https://frik0.atlassian.net'
